@@ -22,7 +22,7 @@
 </style>
 <script src='http://code.jquery.com/jquery-1.9.1.js'></script>
 <script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
-<script src='assets/ls/moment.min.js'></script>
+<script src='assets/js/moment.min.js'></script>
 <script src='assets/js/fullcalendar.min.js'></script>
 <script src='assets/js/jquery.fancybox-1.3.1.pack.js'></script> 
 <script type="text/javascript">
@@ -38,7 +38,7 @@ $(function() {
 			var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');
 			$.fancybox({
 				'type':'ajax',
-				'href':'php/event.php?action=add&date='+selDate
+				'href':'assets/event.php?action=add&date='+selDate
 			});
     	}
 	});
