@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<!--
+	Identity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<link rel="icon" href="./images/favicon.png">
+		<title>Login</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/html5shiv.js"></script><![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/login.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-loading">
+
+		<!-- Wrapper -->
+			<div id="wrapper" style="background-color:#242943;">
+
+				<!-- Main -->
+					<section id="main">
+						<header>
+							<span class="avatar"><img src="images/avatar.png" width="122px;" height="122px;" alt="" /></span>
+							<h1 id="title">USER</h1>
+							<p id="greeting">LOGIN TO START JAM WITH FRIENDS</p>
+						</header>
+						
+						<hr />
+						<form method="post" action="">
+							<div class="field">
+                <input style="display: none;" type="text" name="username" id="username" placeholder="User Name" />                                                                                                 
+              </div>
+							<div class="field">
+								<input type="email" name="email" id="email" placeholder="Email" />
+							</div>
+							<div class="field">
+								<input type="text" name="password" id="password" placeholder="Password" />
+							</div>
+							<div class="field">                                                                                                                           
+                <input style="display: none;" type="text" name="password_verify" id="password_verify" placeholder="Password Again" />                                                                                        
+              </div>
+							<ul class="actions">
+								<li><span class="button" id="login">LOGIN</span></li>
+                <li><span class="button" id="sign_up">SIGN UP</span></li>
+								<li><span class="button" id="register" style="display: none;">REGISTER </span></li>
+							</ul>
+						</form>
+					</section>
+
+				<!-- Footer -->
+        <br>
+			</div>
+
+		<!-- Scripts -->
+			<!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
+			<script>
+				if ('addEventListener' in window) {
+					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
+					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+				}
+				$('#login').on('click',function (){
+            console.log('Eamil:'+$('#email').val());
+            console.log('Password:'+$('#password').val());
+            $.ajax({
+                type: "post",
+                url: "/login",
+                data: {email:$('#email').val(),password:$('#password').val()},
+                success: function(data) {
+                  if(data=='404'){
+                    $('#greeting').html('Account Not Exist');
+                  }
+                  else if(data=='403'){
+                    $('#greeting').html('Wrong Password'); 
+                  }
+                  else{
+                    $('#greeting').html('Welcome, '+data); 
+                    setCookie('username',data,3);
+                    setTimeout(function(){
+                      window.location.href='profile.html';
+                    }, 3000);
+                  }                                                                                                  
+                }
+         });
+				});
+				$('#sign_up').on('click',function (){
+						$('.avatar').hide();
+						$('#username').show();
+            $('#password_verify').show();
+						$('#login').hide();
+						$('#sign_up').hide();
+						$('#register').show();
+            $('#title').text('SIGN UP');
+            $('#greeting').html('Welcome to JAM, Our New Friend');
+				});
+				$('#register').on('click',function (){
+            if($('#username').val().length<1||$('#email').val().length<1||$('#password').val().length<1||$('#password_verify').val().length<1){
+              $('#greeting').html('Please Fill In all Form Segment');
+            }
+            else if ($('#password').val()!=$('#password_verify').val()){
+							$('#greeting').html('Make Sure Password are Matched');
+						}
+            else{
+             	$.ajax({
+                type: "post",
+                url: "/register",
+                data: {name:$('#username').val(),email:$('#email').val(),password:$('#password').val()},
+                success: function(data) {
+                  if(data=='405'){
+                    $('#greeting').html('Account Had Existed');                                                                                                  
+                  }
+                  else if(data=='200'){
+                    $('#greeting').html('Register Success!, '+$('#username').val());
+                    setTimeout(function(){
+                      $('.avatar').show();
+                      $('#username').hide();
+                      $('#password_verify').hide();
+                      $('#login').show();
+                      $('#sign_up').show();
+                      $('#register').hide();
+                      $('#title').text('USER');
+                      $('#greeting').html('LOGIN TO START JAM WITH FRIENDS');
+                    }, 3000);
+                  }
+                }
+         			});
+            }
+        });
+				function setCookie(cname, cvalue, exhours) {
+    			var d = new Date();
+    			d.setTime(d.getTime() + (exhours*60*60*1000));
+    			var expires = "expires="+ d.toUTCString();
+    			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+				}
+			</script>
+	</body>
+</html>

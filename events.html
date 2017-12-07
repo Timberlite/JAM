@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<link rel="icon" href="./images/favicon.png">
+    <title>Events</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      #avatar{
+        margin-top:16%;
+        height:70%;
+        border-radius:100px;
+      }
+    </style>
+  </head>
+	<body>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="#" class="logo"><strong>JAM</strong> <span>綜合社群管理平台</span></a>
+						<nav>
+							<a href="#"><img src="images/avatar.png" id="avatar" alt=""></img></a>
+              <a href="#" id="username">User</a>
+              |
+              <a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="calendar.html">Calendar</a></li>
+							<li><a href="cloud.html">Cloud</a></li>
+							<li><a href="bulletin.html">Bulletin</a></li>
+              <li><a href="album.html">Album</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="message.html">Message</a></li>
+						</ul>
+						<ul class="actions vertical">
+							<li><a href="profile.html" id="profile" class="button special fit">Profile<a></li>
+              <li><a id="logout" class="button fit">Log Out<a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Events</h1>
+									</header>
+								</div>
+                <div style="min-height:600px;"></div>
+							</section>
+
+					</div>
+
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="#" class="icon alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Untitled</li><li>Web Programming in NCKU 2017</li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+      <script>
+        checkCookie();
+
+      	function checkCookie() {
+    			var username = getCookie("username");
+    			if (username != "") {
+        		$('#username').html(username);
+    			} else {
+						alert("Please Login First");
+						window.location.href='login.html';
+    			}
+				}	
+				function getCookie(cname) {
+    			var name = cname + "=";
+    			var decodedCookie = decodeURIComponent(document.cookie);
+    			var ca = decodedCookie.split(';');
+    			for(var i = 0; i <ca.length; i++) {
+        		var c = ca[i];
+        		while (c.charAt(0) == ' ') {
+            	c = c.substring(1);
+        		}
+        		if (c.indexOf(name) == 0) {
+            	return c.substring(name.length, c.length);
+        		}
+    			}
+    			return "";
+				}
+				$('#logout').on('click',function (){
+					document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+					window.location.href='login.html';
+				});
+			</script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</body>
+</html>
