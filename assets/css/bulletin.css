@@ -1,0 +1,35 @@
+h4{
+  color: #000000;
+}
+
+.post-tag{
+  background-color:#000;
+  color:#fff;
+  display:inline-block;
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: center;
+}
+
+.post-small{
+  font-size: 15px;
+}
+
+.post-theme-d1{color:#fff; background-color:#57707d;}
+.post-theme-d2{color:#fff; background-color:#4d636f;}
+.post-theme-d3{color:#fff; background-color:#435761;}
+.post-theme-d4{color:#fff; background-color:#3a4b53;}
+.post-theme-d5{color:#fff; background-color:#303e45;}
+
+.post-func-table{
+  display:table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.post-func-col{
+  display:table-cell;
+  position: relative;
+  text-align:center;
+}
+
