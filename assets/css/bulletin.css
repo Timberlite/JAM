@@ -33,3 +33,34 @@ h4{
   text-align:center;
 }
 
+.post-attri{
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.post-comment{
+  height:40px;
+  width: 100%;
+}
+
+.left-avatar{
+  display: inline;
+  float:left;
+  width: 15%;
+  height: 100%;
+}
+
+.right-content{
+  display: inline;
+  width: 85%;
+}
+
+.post-avatar{
+  height: 70%;
+  border-radius: 100px;
+  margin-right: 10px;
+}
+
+.comment-content{
+  width: 100%;
+}
