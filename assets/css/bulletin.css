@@ -2,6 +2,15 @@ h4{
   color: #000000;
 }
 
+.card-title{
+  font-size: 20px;
+  margin: 10px 0px 10px 0px;
+}
+
+.insert-tab{
+  display:
+
+
 .post-tag{
   background-color:#000;
   color:#fff;
@@ -65,4 +74,36 @@ h4{
   width: 100%;
   margin: 0px 0px 0px 0px;
   border-radius: 15px;
+}
+
+.filter-row{
+  height: 36px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0px 0px 5px 0px;
+}
+.filter-row:hover{
+  background-color: #d9d9d9;
+}
+
+.filter-label{
+  float: left;
+  height: 36px;
+  width :60%;
+  margin: 0px 0px 0px 0px;
+}
+
+.filter-label-icon{
+  float: left;
+  width:20px;
+  margin: 0px 5px 0px 0px;
+}
+
+.filter-label-content{
+  float:left;
+  margin: 0px 0px 0px 0px;
+}
+
+.filter-label-done{
+  float: right;
 }
