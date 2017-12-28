@@ -7,9 +7,35 @@ h4{
   margin: 10px 0px 10px 0px;
 }
 
-.insert-tab{
-  display:
+.zac-center{
+  text-align:center;
+}
 
+.insert-tab{
+  z-index:5;
+}
+
+.zac-add-label{
+  font-size:9px;
+  background-color:#242a43!important;
+  color: #ffffff!important;
+}
+
+.zac-label-sel{
+  z-index:99;
+}
+
+.label-select-div{
+  width: 50%;
+}
+
+.zac-insert-tab-content{
+  height: 120px;
+}
+
+.zac-insert-button{
+  font-size:12px;
+}
 
 .post-tag{
   background-color:#000;
