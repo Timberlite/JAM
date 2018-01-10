@@ -23,9 +23,24 @@
         min-width:180px;
         border-radius:100px;
       }
+      #co::after{
+        width:70%;
+      }
+      .col-name{
+        border-width:3px;
+        border-color:#fff;
+        border-style:solid;
+        width:100%;
+        line-height:4.5em;
+        text-align:center;
+      }
+      .selected{
+        background-color:#fff;
+        color:#242943;
+      }
     </style> 
  	</head>
-	<body>
+	<body class="is-loading">
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -64,19 +79,31 @@
           <section id="one">
             <div class="inner">
               <header class="major">
-                <h1>Collections</h1>
+                <h1 id="co">Collections 
+                  <span style="padding-left:0.5em;" id="add-btn">+</span>
+                  <span style="padding-left:0.5em;" id="minus-btn">-</span>
+                </h1>
               </header>
-                 <div class="box alt">
-                    <div class="row 50% uniform">
-                       <div class="4u"><span class="image fit"><img src="images/pic18.jpg" alt="" /></span></div>
-                       <div class="4u"><span class="image fit"><img src="images/pic19.jpg" alt="" /></span></div>
-                       <div class="4u$"><span class="image fit"><img src="images/pic20.jpg" alt="" /></span></div>
-                       <!-- Break -->
-                       <div class="4u"><span class="image fit"><img src="images/pic20.jpg" alt="" /></span></div>
-                       <div class="4u"><span class="image fit"><img src="images/pic18.jpg" alt="" /></span></div>
-                       <div class="4u$"><span class="image fit"><img src="images/pic_add.jpg" alt="" /></span></div>
+                <div class="box alt">
+                    <div id="create_col">
+                        <hr>
+                        <h3>New group name is: </h3>
+												<p id="note"></p>                                                                                           
+                        <input type="text" id="new_col_name" placeholder="What's your new group name?"> </input>
+                        <br><a class="button" id="create-btn">Create</a>
+                        <hr>
                     </div>
-                  </div>
+										<div id="delete_col">
+                        <hr>                                                                                                               
+                        <h3>Are you sure you want to Delete it?</h3>                                                                                       
+                        <input type="checkbox" id="demo-human" name="demo-human"></input>
+												<label for="demo-human">Yes, I comfirm.</label>
+												<br><a class="button" id="delete-btn">Delete</a>
+                        <hr>
+                    </div>
+                    <div class="row 50% uniform" id="col-block">
+                    </div>
+                </div>
             </div>
           </section>
           </div>
@@ -100,12 +127,36 @@
 
 		<!-- Scripts -->
       <script>
-        checkCookie();
-
+        function hideCol(){
+          $('#create_col').hide();
+          $('#delete_col').hide();
+        }
+        hideCol();
+        $('#minus-btn').hide();
+        checkCookie(); 
         function checkCookie() {
           var username = getCookie("username");
           if (username != "") {
             $('#username').html(username);
+            
+              $.ajax({
+                type: "post",
+                url: "/load_groups",
+                data: {name:$('#username').html()},
+                success: function(data) {
+                  var i;
+                  for(i=1;i<data.length;i++){
+								    if(i%3==0){
+                      $('#col-block').append("<div class=\"4u$\"><span class=\"image fit\"><h3 class=\"col-name\">"+data[i]+"</h3></span></div>");
+                    }
+                    else{              
+                      $('#col-block').append("<div class=\"4u\"><span class=\"image fit\"><h3 class=\"col-name\">"+data[i]+"</h3></span></div>");
+                    }
+                  }
+                  listenOn();
+                }
+							});
+
           } else {
             alert("Please Login First");
             window.location.href='login.html';
@@ -130,6 +181,68 @@
           document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           window.location.href='login.html';
         });
+        function listenOn(){
+          $('.col-name').on('click',function (){
+            $('.selected').removeClass('selected');
+            $(this).addClass('selected');
+            setCookie('groupname',$(this).html(),3);
+            $('#minus-btn').show();
+            console.log('username:'+getCookie('username')+",groupname:"+getCookie('groupname'));
+          });
+        }
+				$('#add-btn').on('click',function (){
+					hideCol();
+          $('#create_col').show();
+        	$('#create-btn').on('click',function (){	
+						if($('#new_col_name').val().length<1){
+							$('#note').html("Group name cannot be Empty");	
+						}
+						else{
+							$('#note').html("");
+							console.log("name:"+$('#username').html()+',col_name:'+$('#new_col_name').val());
+							$.ajax({                                                                                                                     
+                type: "post",
+                url: "/create_group",
+                data: {name:$('#username').html(),col_name:$('#new_col_name').val()},
+                success: function(data) {
+                  if(data=='405'){
+                    $('#note').html('Account Had Existed');                                                                            
+                  }
+                  else if(data=='200'){
+                    $('#note').html($('#new_col_name').val()+" create success!");
+                    setTimeout(function(){
+										  window.location.href='profile.html'; 
+                    }, 1000);
+                  }
+                }
+              }); 
+						}
+					});
+				});
+				$('#minus-btn').on('click',function (){
+          hideCol();
+          $('#delete_col').show();
+					$('#delete-btn').on('click',function (){  
+					if($('#demo-human').prop('checked')){
+              $.ajax({                                                                                                                     
+                type: "post",
+                url: "/delete_group",
+                data: {name:$('#username').html(),col_name:$('.selected').html()},
+                success: function(data) {
+                  if(data=='200'){
+                    window.location.href='profile.html'; 
+                  }
+                }
+              }); 
+            }
+          });
+        });
+				function setCookie(cname, cvalue, exhours) {
+          var d = new Date();
+          d.setTime(d.getTime() + (exhours*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
       </script>
       <script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
@@ -141,6 +254,5 @@
       <script src="./assets/js/register.js"></script>
       <script src="./assets/js/sw.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <s>
 	</body>
 </html>
