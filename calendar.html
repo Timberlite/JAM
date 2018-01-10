@@ -258,7 +258,7 @@ $('#logout').on('click',function(){
 				}
 			];
 			$.ajax({
-		url: "/event_load",
+		url: "/calendar/event_load",
 		type: "post",
 		data: {
 			groupname: groupname
@@ -267,6 +267,7 @@ $('#logout').on('click',function(){
 		},
 		success: (res) => {
 		jason=res;
+    console.log(jason);
 		$('#calendar').fullCalendar({
 		
 			header: {
@@ -289,19 +290,21 @@ $('#logout').on('click',function(){
 		event.value=calEvent.title;
           $('#changeEventModal').modal('show');
 		   $( '#changebu' ).off('click').on('click',function(e) {
+       e.preventDefault();
 		calEvent.title=event.value;
 		calEvent.start=document.getElementById('change_from').value+'T'+document.getElementById('change_from_time').value;
 		calEvent.end=document.getElementById('change_to').value+'T'+document.getElementById('change_to_time').value;
 		$.ajax({
-		url: "/event_change",
+		url: "/calendar/event_change",
 		type: "post",
-		data: {                                        
-			event: $("#change_name").value(),
-			date_from: $("#change_from").value(),
-			time_from: $("#change_from_time").value(),
-			date_to: $("#change_to").value(),
-			time_to: $("#change_to_time").value(),
-			
+		data: {
+      groupname: groupname,
+			title: $("#change_name").val(),
+			date_from: $("#change_from").val(),
+			time_from: $("#change_from_time").val(),
+			date_to: $("#change_to").val(),
+			time_to: $("#change_to_time").val(),
+		  _id: calEvent._id	
 			
 		},
 		success: (res) => {
@@ -313,20 +316,20 @@ $('#logout').on('click',function(){
 });
 
     },
-	eventRender: function(event, element, view) {
+	eventRender: function(calevent, element, view) {
         	if (view.name == 'listDay') {
         		element.find(".fc-list-item-time").append("<span class='closeon'>X</span>");
         	} else {
         		element.find(".fc-content").prepend("<span class='closeon'>X</span>");
         	}
        		element.find(".closeon").on('click', function() {
-        		$('#calendar').fullCalendar('removeEvents',event._id);
+        		$('#calendar').fullCalendar('removeEvents',calevent._id);
 				 $.ajax({
-		url: "/event_delete",
+		url: "/calendar/event_delete",
 		type: "post",
 		data: {
-			event: event._id,
-			
+		  _id: calevent._id,
+			groupname: groupname
 			
 			
 		},
@@ -337,15 +340,17 @@ $('#logout').on('click',function(){
         		console.log('delete');
         		});
         },
-		 eventDrop: function(event, delta, revertFunc) {
-
+		 eventDrop: function(calevent, delta, revertFunc) {
+      console.log("drop_event");
         $.ajax({
-		url: "/event_drop_change",
+		url: "/calendar/event_drop",
 		type: "post",
 		data: {
-			event: event.title,
-			start:event.start.format,
-			end:event.end.format,
+      groupname: groupname,
+      _id: calevent._id,
+			title: calevent.title,
+			start:calevent.start.format(),
+			end:calevent.end.format()
 			
 			
 		},
@@ -366,38 +371,43 @@ $('#logout').on('click',function(){
         
           $('#createEventModal').modal('show');
 		   $( '#submitbu' ).off('click').on('click',function(e) {
+       e.preventDefault();
 		   var event =document.getElementById('name');
 			var date_from=document.getElementById('from').value;
 			var time_from=document.getElementById('from_time').value;
 			var date_to =document.getElementById('to').value;
 			var time_to =document.getElementById('to_time').value;
 		  var eventData;
-		  eventData={
-		  
-		  title: event.value,
-		  start: date_from+'T'+time_from,
-		  end: date_to+'T'+time_to
-		  
-		  
-		  };
+      var id;
 		  $.ajax({
-		url: "/event_insert",
+		url: "/calendar/event_insert",
 		type: "post",
 		data: {
-			event: $("#name").value(),
-			date_from: $("#from").value(),
-			time_from: $("#from_time").value(),
-			date_to: $("#to").value(),
-			time_to: $("#to_time").value(),
+      groupname: groupname,
+			title: $("#name").val(),
+			date_from: $("#from").val(),
+			time_from: $("#from_time").val(),
+			date_to: $("#to").val(),
+			time_to: $("#to_time").val()
 			
 			
 		},
 		success: (res) => {
 			console.log("inserted");
+      console.log(res);
+      id=res;
+
+		  eventData={
+		    title: event.value,
+		    start: date_from+'T'+time_from,
+		    end: date_to+'T'+time_to,
+		    _id:id
+		  };
+
+		  $('#calendar').fullCalendar('renderEvent', eventData, true);
 		}
 	});
 		
-		  $('#calendar').fullCalendar('renderEvent', eventData, true);
 			
 });
 		
