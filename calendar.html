@@ -258,7 +258,7 @@ $('#logout').on('click',function(){
 				}
 			];
 			$.ajax({
-		url: "/event_load",
+		url: "/calendar/event_load",
 		type: "post",
 		data: {
 			groupname: groupname
@@ -267,7 +267,7 @@ $('#logout').on('click',function(){
 		},
 		success: (res) => {
 		jason=res;
-			console.log("inserted");
+			console.log(jason);
 		}
 	});
 		$('#calendar').fullCalendar({
