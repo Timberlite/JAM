@@ -15,34 +15,45 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
 		<script src="assets/js/utils.js"></script>
-	</head>
+	  <style>                                                                                                                                
+      #avatar{
+        margin-top:16%;
+        height:70%;
+        border-radius:100px;
+      }
+    </style>
+  </head>
 	<body>
 
 		<!-- Wrapper -->
 			<div id="wrapper">
 
-				<!-- Header -->
-				<!-- Note: The "styleN" class below should match that of the banner element. -->
-					<header id="header" class="alt style2">
-						<a href="index.html" class="logo"><strong>Forty</strong> <span>by HTML5 UP</span></a>
-						<nav>
-							<a href="#menu">Menu</a>
-						</nav>
-					</header>
+        <!-- Header -->
+          <header id="header">
+            <a href="#" class="logo"><strong>JAM</strong> <span>綜合社群管理平台</span></a>
+            <nav>
+              <a href="#"><img src="images/avatar.png" id="avatar" alt=""></img></a>
+              <a href="#" id="username">User</a>
+              |
+              <a href="#menu">Menu</a>
+            </nav>
+          </header>
 
-				<!-- Menu -->
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="index.html">Home</a></li>
-							<li><a href="#">Landing</a></li>
-							<li><a href="generic.html">Generic</a></li>
-							<li><a href="#">Elements</a></li>
-						</ul>
-						<ul class="actions vertical">
-							<li><a href="#" class="button special fit">Get Started</a></li>
-							<li><a href="#" class="button fit">Log In</a></li>
-						</ul>
-					</nav>
+        <!-- Menu -->
+          <nav id="menu">
+            <ul class="links">
+              <li><a href="calendar.html">Calendar</a></li>
+              <li><a href="cloud.html">Cloud</a></li>
+              <li><a href="bulletin.html">Bulletin</a></li>
+              <li><a href="album.html">Album</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="message.html">Message</a></li>
+            </ul>
+            <ul class="actions vertical">
+              <li><a href="profile.html" id="profile" class="button special fit">Profile<a></li>
+              <li><a id="logout" class="button fit">Log Out<a></li>
+            </ul>
+          </nav>
 
 
 
@@ -77,7 +88,7 @@
 								  </div>
 
 									<script>
-									var CLIENT_ID = '3n36p5dux3b3ows';
+									var CLIENT_ID = 'azumzeqhxgjah7y';
 
 
 									// Parses the url and gets the access token if it is in the urls hash
@@ -193,7 +204,7 @@
 								<li><a href="#" class="icon alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
 							</ul>
 							<ul class="copyright">
-								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+								<li>&copy; Untitled</li><li>Web Programming in NCKU 2017</li>
 							</ul>
 						</div>
 					</footer>
@@ -207,11 +218,8 @@
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-
-
-
-
-			<script src="assets/js/cloud.js"></script>
+			<script src="assets/js/main.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 	</body>
 </html>
