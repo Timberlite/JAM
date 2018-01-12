@@ -65,11 +65,21 @@ color:#000;
 }
 #name{
 border:1px solid #ccc;
+color:black;
+}
+#change_name{
+border:1px solid #ccc;
+color:black;
 }
 #textarea{
 border:1px solid #ccc;
 }
-#submit{
+#submitbu{
+box-shadow:inset 0 0 0 2px #00000061;
+color:#977878;
+float:right;
+}
+#changebu{
 box-shadow:inset 0 0 0 2px #00000061;
 color:#977878;
 float:right;
@@ -134,61 +144,64 @@ float:right;
   <script>
 
 	$(document).ready(function() {
-	
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
-			},
-			dayClick: function(date, jsEvent, view) {
-        var dateday=document.getElementById('from');
-          dateday.value=date.format();
-      $('#createEventModal').modal('show');
+ var username = getCookie("username");
+  var groupname = getCookie("groupname");
+  groupname = "JAM";
+  console.log("groupname: "+groupname);
 
-    },
-	 eventClick: function(calEvent, jsEvent, view) {
+function checkCookie(){
+  var username = getCookie("username");
+  var groupname = getCookie("groupname");
+ 
+ 
+	$.ajax({
+	  url: "/calendar/check_cookie",
+		type: "post",
+		data: {
+			name: username,
+      groupname: groupname 
+		},
+		success: (res) => {
+			console.log("checked");
+      if (username != "")
+      {
+        $('#username').html(username);
+      }
+      else
+      {
+      alert("PleaseLogin First");
+      window.location.href='login.html';
+      }
+		}
+	});
+  
+}
 
-      
-		var event =document.getElementById('name')
-		event.value=calEvent.title;
-          $('#createEventModal').modal('show');
+function getCookie(cname){
+  var name = cname +"=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i =0; i<ca.length ; i++)
+  {
+    var c=ca[i];
+    while (c.charAt(0) == ' ')
+    {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0)
+    {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
-    },
-			defaultDate: '2017-11-12',
-			navLinks: true, // can click day/week names to navigate views
-			selectable: true,
-			selectOverlap:false,
-			selectHelper: true,
-			
-			select: function(start, end, allDay) {
-          
-        
-          $('#createEventModal').modal('show');
-		  $( '#submitbu' ).click(function() {
-		    var event =document.getElementById('name');
-			var date_from=document.getElementById('from').value;
-			var time_from=document.getElementById('from_time').value;
-			var date_to =document.getElementById('to').value;
-			var time_to =document.getElementById('to_time').value;
-		  var eventData;
-		  eventData={
-		  
-		  title: event.value,
-		  start: date_from+'T'+time_from,
-		  end: date_to+'T'+time_to
-		  
-		  
-		  };
-		
-		  $('#calendar').fullCalendar('renderEvent', eventData, true);
-			
+$('#logout').on('click',function(){
+  document.cooie = "username=;expires=Thu, 01Jan 1970 00:00:00 UTC; path=/;";
+  window.location.href='login.html';
 });
-		
-			},
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			events: [
+	
+	 var jason=[
 				{
 					title: 'All Day Event',
 					start: '2017-11-01'
@@ -243,22 +256,203 @@ float:right;
 					url: 'http://google.com/',
 					start: '2017-11-28'
 				}
-			]
-		});
-	
-	 $( '#close' ).click(function() {
-		    var event =document.getElementById('name').value;
+			];
+			$.ajax({
+		url: "/calendar/event_load",
+		type: "post",
+		data: {
+			groupname: groupname
+			
+			
+		},
+		success: (res) => {
+		jason=res;
+    console.log(jason);
+		$('#calendar').fullCalendar({
+		
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			timezone: 'local',
+			dayClick: function(date, jsEvent, view) {
+        var dateday=document.getElementById('from');
+          dateday.value=date.format();
+		  document.getElementById('to').value=date.format();
+      $('#createEventModal').modal('show');
+
+    },
+	 eventClick: function(calEvent, jsEvent, view) {
+
+      
+		var event =document.getElementById('change_name')
+		event.value=calEvent.title;
+          $('#changeEventModal').modal('show');
+		   $( '#changebu' ).off('click').on('click',function(e) {
+       e.preventDefault();
+		calEvent.title=event.value;
+		calEvent.start=document.getElementById('change_from').value+'T'+document.getElementById('change_from_time').value;
+		calEvent.end=document.getElementById('change_to').value+'T'+document.getElementById('change_to_time').value;
+		$.ajax({
+		url: "/calendar/event_change",
+		type: "post",
+		data: {
+      groupname: groupname,
+			title: $("#change_name").val(),
+			date_from: $("#change_from").val(),
+			time_from: $("#change_from_time").val(),
+			date_to: $("#change_to").val(),
+			time_to: $("#change_to_time").val(),
+		  _id: calEvent._id	
+			
+		},
+		success: (res) => {
+			console.log("inserted");
+		}
+	});
+		    $('#calendar').fullCalendar('updateEvent',calEvent);
+			
+});
+
+    },
+	eventRender: function(calevent, element, view) {
+        	if (view.name == 'listDay') {
+        		element.find(".fc-list-item-time").append("<span class='closeon'>X</span>");
+        	} else {
+        		element.find(".fc-content").prepend("<span class='closeon'>X</span>");
+        	}
+       		element.find(".closeon").on('click', function() {
+        		$('#calendar').fullCalendar('removeEvents',calevent._id);
+				 $.ajax({
+		url: "/calendar/event_delete",
+		type: "post",
+		data: {
+		  _id: calevent._id,
+			groupname: groupname
+			
+			
+		},
+		success: (res) => {
+			console.log("deleted");
+		}
+	});
+        		console.log('delete');
+        		});
+        },
+		 eventDrop: function(calevent, delta, revertFunc) {
+      console.log("drop_event");
+        $.ajax({
+		url: "/calendar/event_drop",
+		type: "post",
+		data: {
+      groupname: groupname,
+      _id: calevent._id,
+			title: calevent.title,
+			start:calevent.start.format(),
+			end:calevent.end.format()
+			
+			
+		},
+		success: (res) => {
+			console.log("drop_change");
+		}
+	});
+
+    },
+			defaultDate: '2017-11-12',
+			navLinks: true, // can click day/week names to navigate views
+			selectable: true,
+			selectOverlap:false,
+			selectHelper: true,
+			
+			select: function(start, end, allDay) {
+          
+        
+          $('#createEventModal').modal('show');
+		   $( '#submitbu' ).off('click').on('click',function(e) {
+       e.preventDefault();
+		   var event =document.getElementById('name');
 			var date_from=document.getElementById('from').value;
 			var time_from=document.getElementById('from_time').value;
 			var date_to =document.getElementById('to').value;
 			var time_to =document.getElementById('to_time').value;
-			event="";
-			date_from="";
-			time_from="";
-			date_to="";
-			time_to="";
+		  var eventData;
+      var id;
+		  $.ajax({
+		url: "/calendar/event_insert",
+		type: "post",
+		data: {
+      groupname: groupname,
+			title: $("#name").val(),
+			date_from: $("#from").val(),
+			time_from: $("#from_time").val(),
+			date_to: $("#to").val(),
+			time_to: $("#to_time").val()
+			
+			
+		},
+		success: (res) => {
+			console.log("inserted");
+      console.log(res);
+      id=res;
+
+		  eventData={
+		    title: event.value,
+		    start: date_from+'T'+time_from,
+		    end: date_to+'T'+time_to,
+		    _id:id
+		  };
+
+		  $('#calendar').fullCalendar('renderEvent', eventData, true);
+		}
+	});
+		
+			
+});
+		
+			},
+		 eventMouseover: function (event, jsEvent, view) {
+            var day=event.start;
+			var dd = new Date(day);
+         
+            tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;background:#feb811;position:absolute;z-index:10001;padding:10px 10px 10px 10px ;  line-height: 200%;">' + 'title: ' + ': ' + event.title + '</br>' + 'start: ' + ': ' + dd.toString() + '</div>';
+
+
+            $("body").append(tooltip);
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $('.tooltiptopicevent').fadeIn('500');
+                $('.tooltiptopicevent').fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $('.tooltiptopicevent').css('top', e.pageY + 10);
+                $('.tooltiptopicevent').css('left', e.pageX + 20);
+            });
+
+
+        },
+        eventMouseout: function (event, jsEvent, view) {
+            $(this).css('z-index', 8);
+
+            $('.tooltiptopicevent').remove();
+
+        },
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: jason
+		});
+	
+	 $( '#close' ).click(function() {
+			document.getElementById('name').value="";
+			
+			console.log('click');
+		  
 		  
 });
+			console.log("inserted");
+		}
+	});
+		
 	});
 	
 </script>
@@ -280,21 +474,52 @@ float:right;
 			<li>
 				<label for="from">From</label>
 				<input id="from" name="from" type="date"  required="">
-				<input id="from_time" type="time">
+				<input id="from_time" type="time"  required="">
 			</li>
 			<li>
 				<label for="to">To</label>
 				<input id="to" name="to" type="date"  required="">
-				<input id="to_time" type="time">
+				<input id="to_time" type="time"  required="">
 			</li>
 			
 		</ol>
-		<input type="submit" value="Submit" id="submit">
 		<button id="submitbu">submit</button>
 	</fieldset>
     </form>
     </div>
    
 </div>		
+<div id="changeEventModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" id="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel1" >Change Event</h3>
+    </div>
+    <div class="modal-body">
+    <form id="changeAppointmentForm" class="form-horizontal">
+	<fieldset style="border:0;">
+		<ol>
+			<li>
+				<label for="name">Event</label>
+				<input id="change_name" name="name" type="text" placeholder="ex:打籃球" required="">
+				
+			</li>
+			<li>
+				<label for="from">From</label>
+				<input id="change_from" name="from" type="date"  required="">
+				<input id="change_from_time" type="time"  required="">
+			</li>
+			<li>
+				<label for="to">To</label>
+				<input id="change_to" name="to" type="date"  required="">
+				<input id="change_to_time" type="time"  required="">
+			</li>
+			
+		</ol>
+		<button id="changebu">change</button>
+	</fieldset>
+    </form>
+    </div>
+   
+</div>	
 	</body>
 </html>
