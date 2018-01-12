@@ -1,0 +1,19 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config.default.js",
+  "dependencies": {
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.13.4",
+    "mysql": "^2.15.0",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
