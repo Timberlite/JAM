@@ -66,6 +66,11 @@
 				$('#login').on('click',function (){
             console.log('Eamil:'+$('#email').val());
             console.log('Password:'+$('#password').val());
+            if($('#email').val().indexOf('(')!=-1||$('#email').val().indexOf('<')!=-1||$('#email').val().indexOf('[')!=-1||$('#password').val().indexOf('(')!=-1||$('#password').val().indexOf('<')!=-1||$('#password').val().indexOf('[')!=-1){
+              $('#greeting').html('Dont Try Something Shit on Me ! Huhh!');
+            }
+              
+            else{ 
             $.ajax({
                 type: "post",
                 url: "/login",
@@ -85,7 +90,8 @@
                     }, 3000);
                   }                                                                                                  
                 }
-         });
+           });
+          }
 				});
 				$('#sign_up').on('click',function (){
 						$('.avatar').hide();
@@ -104,6 +110,9 @@
             else if ($('#password').val()!=$('#password_verify').val()){
 							$('#greeting').html('Make Sure Password are Matched');
 						}
+            else if($('#email').val().indexOf('(')!=-1||$('#email').val().indexOf('<')!=-1||$('#email').val().indexOf('[')!=-1||$('#password').val().indexOf('(')!=-1||$('#password').val().indexOf('<')!=-1||$('#password').val().indexOf('[')!=-1||$('#username').val().indexOf('(')!=-1||$('#username').val().indexOf('<')!=-1||$('#username').val().indexOf('[')!=-1){ 
+              $('#greeting').html('Dont Try Something Shit on Me ! Huhh!');
+            }
             else{
              	$.ajax({
                 type: "post",
@@ -124,7 +133,7 @@
                       $('#register').hide();
                       $('#title').text('USER');
                       $('#greeting').html('LOGIN TO START JAM WITH FRIENDS');
-                    }, 3000);
+                    }, 1000);
                   }
                 }
          			});
