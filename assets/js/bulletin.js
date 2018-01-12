@@ -23,6 +23,7 @@ $(document).ready(function(){
   color_sel(color);//handler for color selection of new label
   new_label(color,tag_array);//handler for creating new label, return color for initialising
   insert_post(username,tag_array);//handler for creating new post
+  delete_tag(username, groupname);
   
   //label_select_pattern(selected_pattern);//handler for label selection
 	$.ajax({
@@ -32,10 +33,73 @@ $(document).ready(function(){
           username:username,//retrive data from database by using id and groupname
           groupname:"JAM"
         },
-		success: (res) => {
-					content_list = res;
-					console.log("hello world");
-					console.log(content_list);
+		    success: (res) => {
+					console.log(res);
+					content_list = res.posts;
+          tag_list = res.tags;
+          
+          //store number of posts on page
+          $("#middle_info").data("num_of_posts", content_list.length);
+          $("#middle_info").data("display", 1);
+
+          //store data at .filter class 
+          var length = tag_list.length;
+          var temp_array = [];
+          
+
+          //render the tag list
+          for(i=0; i<tag_list.length;i++)
+          {
+            
+            //fill the right filter tab
+						// get the last DIV which ID starts with ^= "klon"
+						var $pre = $("div[id^='filter-division-']:first");
+						var $ori = $(".filter-division-prototype");//prototype
+
+						// Read the Number from that DIV's ID (i.e: 3 from "klon3")
+						// And increment that number by 1
+						var num_post = parseInt( $pre.prop("id").match(/\d+/g), 10 ) +1;
+
+						// Clone it and assign the new ID (i.e: from num 4 to ID "klon4")
+						var $klon = $ori.clone().prop('id', 'filter-division-'+num_post );
+            
+						// Finally insert $klon wherever you want
+						$pre.before( $klon );
+
+            //fill the klone content
+						$(".filter-label-icon", $klon).addClass('filter-color-option'+tag_list[i].color);
+						$(".filter-label-content", $klon).html(tag_list[i].title);
+					  $klon.removeClass('filter-division-prototype');
+            $klon.data("index",{ind: i, value:tag_list[i].title});
+
+            temp_array.push({on:1, value:tag_list[i].title});
+            //*************************************************************
+            //fill the exist label list
+						// get the last DIV which ID starts with ^= "klon"
+					  $pre = $(".exist-label-list li[id^='label-']:first");
+						$ori = $(".exist-label-list .label-prototype");//prototype
+
+						// Read the Number from that DIV's ID (i.e: 3 from "klon3")
+						// And increment that number by 1
+						num_post = parseInt( $pre.prop("id").match(/\d+/g), 10 ) +1;
+
+						// Clone it and assign the new ID (i.e: from num 4 to ID "klon4")
+						$klon = $ori.clone().prop('id', 'label-'+num_post );
+						// Finally insert $klon wherever you want
+						$pre.before( $klon );
+            
+            //fill the klone content
+            $("div",$klon).removeClass(function(index, className){
+              return (className.match(/(^|\s)color-option\S+/g)|| []).join(' ');
+            });
+						$("div", $klon).addClass('color-option'+tag_list[i].color);
+						$(".label-description", $klon).html(tag_list[i].title);
+					  $klon.data("tag_id", {_id:tag_list[i]._id, ind: i+1});
+            $klon.removeClass('label-prototype');
+          }
+          //store data at filtered tag
+          $(".filter").data("filtered_tag", temp_array);
+
 					for(i=0; i<content_list.length;i++)
 					{
 						//get all needed data from web server
@@ -49,15 +113,10 @@ $(document).ready(function(){
 							new_time[j] = content_list[i].time_of_update[j];
 						}
             */
-            /*
-						for(j=0; j<content_list[i].tag.length;j++)
-						{
-						  //new_tag[j] = content[i].tag[j];
-						}
-            */
+            
+            
 						//new_likes = content[i].likes;
           
-						console.log(new_content);
 						//console.log(content_list[i].time_of_update.length);
 						
 						//$("#post_1").clone().appendTo("#middle_info");
@@ -76,11 +135,57 @@ $(document).ready(function(){
             //change the id of comment block prototype whenever the post is cloned
 						$("#com0-0", $klon).prop('id', 'com'+num_post+'-0');
 
-            
 						// Finally insert $klon wherever you want
 						$pre.before( $klon );
+					
+            
+            //store tag index at each post 
+            var temp_tags_index = [];
+
+            //fill all tags on posts
+						for(j=0; j<content_list[i].tags.length;j++)
+						{
+              //console.log(content_list[i].tags[j]);
+						  // get the last DIV which ID starts with ^= "klon"
+					    var $tpre = $(".post-tag-list span[id^='post-tag-']:first",$klon);
+						  var $tori = $(".post-tag-list .post-tag-prototype",$klon);//prototype
+
+						  // Read the Number from that DIV's ID (i.e: 3 from "klon3")
+						  // And increment that number by 1
+							var code = $tori.prop("id").match(/\d+/g);
+						  var num_tag = parseInt( code[1], 10 ) +1;
+
+						  // Clone it and assign the new ID (i.e: from num 4 to ID "klon4")
+						  var $tklon = $tori.clone().prop('id', 'post-tag-'+num_post+'-'+num_tag );
+						  // Finally insert $klon wherever you want
+						  $tpre.before( $tklon );
+            
+              //fill the klone content
+              $tklon.removeClass(function(index, className){
+                return (className.match(/(^|\s)post-theme-d\S+/g)|| []).join(' ');
+              });
+
+              var temp_tag = {};
+              for(ind=0; ind<tag_list.length;ind++)
+              {
+                 if(content_list[i].tags[j] ==tag_list[ind]._id)
+                 {
+                    temp_tag = tag_list[ind];
+                    //console.log(temp_tag);
+                    break;
+                 }
+              }
+						  $tklon.addClass('post-theme-d'+temp_tag.color);
+						  $tklon.html(temp_tag.title);
+					    $tklon.removeClass('post-tag-prototype');
+              
+              temp_tags_index.push(temp_tag.title);
 						
-						for(j=0; j<content_list[i].comments.length ; j++)
+            }
+              
+            $klon.data('tags',temp_tags_index); 
+						
+            for(j=0; j<content_list[i].comments.length ; j++)
 						{
              // console.log(j);
               
@@ -202,8 +307,11 @@ function new_label(color,tag_array){
 function insert_post(username, tag){
     
   $(".zac-insert-button").click(() => {
-    var d = new Date(); 
-    console.log("testdata"+tag[0].title);
+    var d = new Date();
+    console.log(tag);
+    if(tag.length == 0)
+      tag = -1;
+    //console.log("testdata"+tag[0].title);
     console.log($(".zac-insert-tab-content").text());
 	  $.ajax({
 		  url: "/bulletin/insertPost",
@@ -317,6 +425,121 @@ $("#right-cancel").click(function(){
 	
 });
 //***************************************************************************
+//filter label***************************************************************
+$(".filter").on("click","div[id^='filter-division']",function(e){
+
+    var filtered= $(".filter").data("filtered_tag");
+    //console.log(filtered);
+
+
+    if(filtered[$(this).data("index").ind].on == 1)//command off
+    {
+      $(".filter-label-done", $(this)).css("color", "white");
+      filtered[$(this).data("index").ind].on = 0;
+      //console.log($(this).data("index").value);
+      //console.log($("#middle_info div[id^='post']:first").data('tags'));
+     
+      for(i=1; i<=$("#middle_info").data("num_of_posts"); i++)
+      {
+          var sel = "#middle_info #post"+i;
+          var tags_in_post = $(sel).data('tags');
+          //console.log(tags_in_post);
+          //console.log($(this).data("index").value);
+          for(j=0; j< tags_in_post.length; j++)
+          {  
+            if(tags_in_post[j] == $(this).data("index").value)
+            {
+                $(sel).css("display", "none");
+            }
+          }
+      }
+    }
+    else
+    {
+      $(".filter-label-done", $(this)).css("color", "black");//command on
+      filtered[$(this).data("index").ind].on =1 ;
+      for(i=1; i<=$("#middle_info").data("num_of_posts"); i++)
+      {
+          var sel = "#middle_info #post"+i;
+          var tags_in_post = $(sel).data('tags');
+          //console.log(tags_in_post);
+          for(j=0; j< tags_in_post.length; j++)
+          {  
+            if(tags_in_post[j] == $(this).data("index").value)
+            {
+                $(sel).css("display", "block");
+            }
+          }
+      }
+    }
+    //console.log("click");
+});
+
+$(".filter").on("click","#default_tag",function(e){
+    //only control post without tag
+    if($("#middle_info").data("display") == 1)
+    { 
+      $("#middle_info").data("display", 0);
+      $(".filter-label-done", $(this)).css("color", "white");//command off
+      for(i=1; i<=$("#middle_info").data("num_of_posts"); i++)
+      {
+        var sel = "#middle_info #post"+i;
+        var tags_in_post = $(sel).data('tags');
+
+        if(tags_in_post.length == 0)
+          $(sel).css("display", "none");
+      }
+    }
+    else
+    {
+      $("#middle_info").data("display", 1);
+      $(".filter-label-done", $(this)).css("color", "black");//command on
+      for(i=1; i<=$("#middle_info").data("num_of_posts"); i++)
+      {
+        var sel = "#middle_info #post"+i;
+        var tags_in_post = $(sel).data('tags');
+
+        if(tags_in_post.length == 0)
+          $(sel).css("display", "block");
+      }
+    }
+});
+
+//***************************************************************************
+//delete-tags
+
+function delete_tag(username, groupname)
+{
+  $(".exist-label-list").on("click","li >i",function(e){
+    console.log("clicl");
+    var this_parent = $(this).parents("li[id^='label-']");
+    var parent_data = this_parent.data("tag_id");
+    var ind = parent_data.ind;
+    var id = parent_data._id;
+
+    //front-end modifier
+    this_parent.css("display", "none");
+    var sel = "#filter-division-"+ind;
+    $(sel).css("display","none");
+
+    //
+	  $.ajax({
+				  url: "/bulletin/tag_delete",
+				  type: "post",
+          data:{
+            username:username,//retrive data from database by using id and groupname
+            groupname:"JAM",
+            tag_id: id
+          },
+		      success: (res) => {
+					  console.log(res);
+					  content_list = res.posts;
+  
+          }
+    });
+
+  });
+}
 
 //check cookies*********************
 checkCookie();

@@ -147,7 +147,7 @@
 
 												<!-- Alert Box -->
                         <!--
-												<div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
+e											<div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
 													<span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
 														<i class="fa fa-remove"></i>
 													</span>
@@ -192,12 +192,12 @@
 																	<hr>
 																	<input type="text" name="search-label" value="Search labels...">
 																	<ul class = "exist-label-list">
-																		<li class="clearfix label-prototype" id = "label-0">
+																		<li class="clearfix label-prototype unselectable_zac" id = "label-0">
 																			<div class="color-option2">
                                         <div class="label-description ">aaa</div>
                                         <i class="material-icons">done</i>
                                       </div>
-																			<i class="material-icons">create</i>
+																			<i class="material-icons">clear</i>
 																		</li>
 																		
 																	</ul>
@@ -242,12 +242,8 @@
 													<img src="images/avatar.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
 													<span class="w3-right w3-opacity past_time">16 min</span>
 													<h4 class ="post_author">Jane Doe</h4><br>
-													<p>
-														<span class="post-tag post-small post-theme-d5">News</span>
-														<span class="post-tag post-small post-theme-d4">W3Schools</span>
-														<span class="post-tag post-small post-theme-d3">Labels</span>
-														<span class="post-tag post-small post-theme-d2">Games</span>
-														<span class="post-tag post-small post-theme-d1">Friends</span>
+													<p class ="post-tag-list">
+														<span class="post-tag post-small post-theme-d5 post-tag-prototype" id ="post-tag-0-0">Protos</span>
 													</p>
 													<hr class="w3-clear">
 													<p class = "content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -290,10 +286,11 @@
 											<div class="w3-col m2">
 											
 												<div class="w3-card w3-round w3-white w3-center">
-													<div class="w3-container">
+													<div class="w3-container filter">
 														<p class="card-title">Filter</p>
                             <hr class="w3-clear">
-                            <div>
+
+                            <div id = "filter-division-0" class="filter-division-prototype unselectable_zac">
                               <div class="filter-row">
                                 <div class="filter-label">
                                   <i class="material-icons filter-label-icon">label</i>
@@ -302,20 +299,12 @@
                                 <i class="material-icons filter-label-done">done</i>
                               </div>
                             </div>
-                            <div>
+
+                            <div id = "default_tag" class="unselectable_zac">
                               <div class="filter-row">
                                 <div class="filter-label">
                                   <i class="material-icons filter-label-icon">label</i>
-                                  <p class="filter-label-content">Hello1</p> 
-                                </div>
-                                <i class="material-icons filter-label-done">done</i>
-                              </div>
-                            </div>
-                            <div>
-                              <div class="filter-row">
-                                <div class="filter-label">
-                                  <i class="material-icons filter-label-icon">label</i>
-                                  <p class="filter-label-content">Hello1</p> 
+                                  <p class="filter-label-content">None</p> 
                                 </div>
                                 <i class="material-icons filter-label-done">done</i>
                               </div>

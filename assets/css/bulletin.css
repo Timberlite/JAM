@@ -236,6 +236,14 @@ h4{
 #color-option8:hover{background-color:rgba(181,191,219,1.0);}
 */
 
+.filter-color-option1{color:rgba(32,42,67,1.0);}
+.filter-color-option2{color:rgba(52,68,109,1.0);}
+.filter-color-option3{color:rgba(65,84,135,1.0);}
+.filter-color-option4{color:rgba(77,99,159,1.0);}
+.filter-color-option5{color:rgba(104,125,183,1.0);}
+.filter-color-option6{color:rgba(133,151,197,1.0);}
+.filter-color-option7{color:rgba(157,171,208,1.0);}
+.filter-color-option8{color:rgba(181,191,219,1.0);}
 /*for testing use */
 .color-option1{background-color:rgba(32,42,67,1.0);}
 .color-option2{background-color:rgba(52,68,109,1.0);}
@@ -283,6 +291,10 @@ h4{
   padding-right: 8px;
   text-align: center;
   margin: 1px 1px 1px 1px;
+}
+
+.post-tag-prototype{
+  display: none;
 }
 
 .post-small{
@@ -383,6 +395,9 @@ h4{
 
 
 /**************************************************************/
+.filter-division-prototype{
+  display: none;
+}
 
 .filter-row{
   height: 36px;
@@ -415,3 +430,14 @@ h4{
 .filter-label-done{
   float: right;
 }
+
+/*common usage*/
+.unselectable_zac{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select:none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
