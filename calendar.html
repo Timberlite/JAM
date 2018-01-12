@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-	<link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css' rel='stylesheet' />
+	<link href='https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css' rel='stylesheet' />
 		<link rel="icon" href="./images/favicon.png">
     <title>Calendar</title>
 		<meta charset="utf-8" />
@@ -20,8 +20,10 @@
 <link rel="stylesheet" type="text/css" href="assets/css/fullcalendar.min.css">
 <link rel="stylesheet" type="text/css" href="assets/css/fullcalendar.print.min.css" media='print'>
 
-<script src='http://code.jquery.com/jquery-1.9.1.js'></script>
-<script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
+<!--<script src='http://code.jquery.com/jquery-1.9.1.js'></script>
+<script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>-->
+<script src='https://code.jquery.com/jquery-3.2.1.js'></script>
+<script src='https://code.jquery.com/ui/1.12.1/jquery-ui.js'></script>
 <script src='assets/js/moment.min.js'></script>
 <script src='assets/js/fullcalendar.min.js'></script>
 
@@ -370,8 +372,9 @@ $('#logout').on('click',function(){
           
         
           $('#createEventModal').modal('show');
-		   $( '#submitbu' ).off('click').on('click',function(e) {
+		   $( '#submitbu' ).on('click touch',function(e) {
        e.preventDefault();
+       console.log("hello bug");
 		   var event =document.getElementById('name');
 			var date_from=document.getElementById('from').value;
 			var time_from=document.getElementById('from_time').value;

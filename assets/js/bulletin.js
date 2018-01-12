@@ -312,13 +312,13 @@ function insert_post(username, tag){
     if(tag.length == 0)
       tag = -1;
     //console.log("testdata"+tag[0].title);
-    console.log($(".zac-insert-tab-content").text());
+    console.log($(".zac-insert-tab-content").html());
 	  $.ajax({
 		  url: "/bulletin/insertPost",
 		  type: "post",
 		  data: {
 			  name: username,
-			  new_post: $(".zac-insert-tab-content").text(),
+			  new_post: $(".zac-insert-tab-content").html(),
         tags: tag,
         time:[
           d.getFullYear(),
