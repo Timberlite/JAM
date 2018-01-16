@@ -46,7 +46,6 @@
 	body {
 		margin: 40px 10px;
 		padding: 0;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 		font-size: 14px;
 	}
 
@@ -121,6 +120,7 @@ float:right;
 					</nav>
 
 				<!-- Main -->
+        <h2 id="group_name" style="text-align:center;">Group 行事曆</h2>
 				<div >
   <div id='calendar'></div>
   </div>
@@ -144,18 +144,30 @@ float:right;
 
 		<!-- Scripts -->
   <script>
-
+  
 	$(document).ready(function() {
  var username = getCookie("username");
-  var groupname = getCookie("groupname");
-  groupname = "JAM";
+  var groupname = getCookie("groupname");;
   console.log("groupname: "+groupname);
-
+  checkCookie();
 function checkCookie(){
   var username = getCookie("username");
   var groupname = getCookie("groupname");
  
- 
+	//added START
+  				if (username != "") {
+            $('#username').html(username);
+          } else {
+            alert("Please Login First");
+            window.location.href='login.html';
+          }
+					if (groupname != "") {
+            $('#group_name').html(groupname+"的行事曆");
+          } else {
+            alert("Please Select a Group First");                                                                                                   
+            window.location.href='profile.html';
+          }
+ 	//added END  
 	$.ajax({
 	  url: "/calendar/check_cookie",
 		type: "post",

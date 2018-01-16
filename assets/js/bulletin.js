@@ -4,7 +4,7 @@ $(document).ready(function(){
 	//retrive data from cookie
   var username = getCookie("username");
   var groupname = getCookie("groupname");
-  groupname = "JAM";
+  //groupname = "JAM";
   console.log("groupname: "+groupname);
 
 	var content_list;
@@ -31,7 +31,7 @@ $(document).ready(function(){
 				type: "post",
         data:{
           username:username,//retrive data from database by using id and groupname
-          groupname:"JAM"
+          groupname:groupname
         },
 		    success: (res) => {
 					console.log(res);
@@ -222,6 +222,9 @@ $(document).ready(function(){
 
 });
 
+//added
+$(".exist-label").css("display", "none");
+$("#group_name").html(getCookie("groupname"));
 
 $('#insert').click(() => {
   var d = new Date();  

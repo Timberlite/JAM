@@ -1,71 +1,67 @@
 <!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
+		<link rel="icon" href="./images/favicon.png">
 		<title>Cloud</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
 		<script src="assets/js/utils.js"></script>
-	  <style>                                                                                                                                
+    <style>
       #avatar{
         margin-top:16%;
         height:70%;
         border-radius:100px;
       }
     </style>
-  </head>
+	</head>
 	<body>
 
 		<!-- Wrapper -->
 			<div id="wrapper">
 
-        <!-- Header -->
-          <header id="header">
-            <a href="#" class="logo"><strong>JAM</strong> <span>綜合社群管理平台</span></a>
-            <nav>
-              <a href="#"><img src="images/avatar.png" id="avatar" alt=""></img></a>
-              <a href="#" id="username">User</a>
-              |
-              <a href="#menu">Menu</a>
-            </nav>
-          </header>
+				<!-- Header -->
+				<header id="header">
+					<a href="#" class="logo"><strong>JAM</strong> <span>綜合社群管理平台</span></a>
+					<nav>
+						<a href="#"><img src="images/avatar.png" id="avatar" alt=""></img></a>
+						<a href="#" id="username">User</a>
+						|
+						<a href="#menu">Menu</a>
+					</nav>
+				</header>
 
-        <!-- Menu -->
-          <nav id="menu">
-            <ul class="links">
-              <li><a href="calendar.html">Calendar</a></li>
-              <li><a href="cloud.html">Cloud</a></li>
-              <li><a href="bulletin.html">Bulletin</a></li>
-              <li><a href="album.html">Album</a></li>
-              <li><a href="events.html">Events</a></li>
-              <li><a href="message.html">Message</a></li>
-            </ul>
-            <ul class="actions vertical">
-              <li><a href="profile.html" id="profile" class="button special fit">Profile<a></li>
-              <li><a id="logout" class="button fit">Log Out<a></li>
-            </ul>
-          </nav>
-
-
-
+				<!-- Menu -->
+				<nav id="menu">
+					<ul class="links">
+						<li><a href="calendar.html">Calendar</a></li>
+						<li><a href="cloud.html">Cloud</a></li>
+						<li><a href="bulletin.html">Bulletin</a></li>
+						<li><a href="album.html">Album</a></li>
+						<li><a href="events.html">Events</a></li>
+						<li><a href="message.html">Message</a></li>
+					</ul>
+					<ul class="actions vertical">
+						<li><a href="profile.html" id="profile" class="button special fit">Profile<a></li>
+						<li><a id="logout" class="button fit">Log Out<a></li>
+					</ul>
+				</nav>
 				<!-- Main -->
 					<div id="main">
-
 						<!-- One -->
 							<section id="one">
 								<div class="inner">
 									<header class="major">
 										<img src="https://cfl.dropboxstatic.com/static/images/brand/logotype_white-vflRG5Zd8.svg" class="logo" />
-										<h2>存取您的雲端資料夾</h2>
+										<div id="pre-auth-header" style="display:none;">
+											<h2>存取您的雲端資料夾</h2>
+										</div>
+										<div id="authed-header" style="display:none;">
+											<h2>登入成功！祝您旅途愉快～</h2>
 									</header>
 
 									<div class="container main">
@@ -73,153 +69,298 @@
 											<p>為了您的安全與便利，本平台使用Dropbox作為雲端帳號<br>
 											若要利用OAuth 2來存取您的雲端，請按下以下按鈕並登入Dropbox帳號</p>
 											<div class="12u$">
-	 										 <ul class="actions">
-												 <li><a href="" id="authlink" class="button">登入Dropbox</a></li>
-	 										 </ul>
+												<a href="" id="authlink" class="button" >登入Dropbox</a>
 	 									 </div>
-
+										 <br>
 								      <p class="info">注意，為了確保安全，本平台沒有記錄您的帳密，需自行登入。</p>
 								    </div>
 
 								    <div id="authed-section" style="display:none;">
-								      <p>登入成功，以下是您的資料</p>
-								      <ul id="files"></ul>
-								    </div>
+											<div class="box" style="border-width:thick;">
+												<h4>在您的根目錄上傳檔案：</h4>
+												<form class="row uniform" onSubmit="return uploadFile()">
+													<div class="6u 12u$(xsmall)">
+														<input type="file" id="file-upload">
+													</div>
+													<div class="6u 12u$(xsmall)">
+														<button type="submit">Upload</button>
+													</div>
+												</form>
+												<br>
+												<h4>在您的根目錄創建資料夾：</h4>
+												<form class="row uniform" onSubmit="return creatFolder()">
+													<div class="6u 12u$(xsmall)">
+													 <input type="text" id="folder_name" placeholder="Folder name" />
+												 </div>
+												 <div class="6u$ 12u$(xsmall)">
+													 <button type="submit">Submit</button>
+												 </div>
+												<form>
+											 </div>
+										 </div>
+										</div>
+										<div class="box alt">
+											<div class="row 50% uniform" id="files">
+											</div>
+										</div>
 								  </div>
-
-									<script>
-									var CLIENT_ID = 'azumzeqhxgjah7y';
-
-
-									// Parses the url and gets the access token if it is in the urls hash
-									function getAccessTokenFromUrl() {
-									 return utils.parseQueryString(window.location.hash).access_token;
-									}
-
-									// If the user was just redirected from authenticating, the urls hash will
-									// contain the access token.
-									function isAuthenticated() {
-									  return !!getAccessTokenFromUrl();
-									}
-
-									// Render a list of items to #files
-									function renderItems(items) {
-									  var filesContainer = document.getElementById('files');
-									  items.forEach(function(item) {
-									    var li = document.createElement('li');
-									    li.innerHTML = item.name;
-									    filesContainer.appendChild(li);
-									  });
-									}
-
-									// This example keeps both the authenticate and non-authenticated setions
-									// in the DOM and uses this function to show/hide the correct section.
-									function showPageSection(elementId) {
-									  document.getElementById(elementId).style.display = 'block';
-									}
-
-									if (isAuthenticated()) {
-									  showPageSection('authed-section');
-
-									  // Create an instance of Dropbox with the access token and use it to
-									  // fetch and render the files in the users root directory.
-									  var dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
-									  dbx.filesListFolder({path: ''})
-									    .then(function(response) {
-									      renderItems(response.entries);
-									    })
-									    .catch(function(error) {
-									      console.error(error);
-									    });
-									} else {
-									  showPageSection('pre-auth-section');
-
-									  // Set the login anchors href using dbx.getAuthenticationUrl()
-									  var dbx = new Dropbox({ clientId: CLIENT_ID });
-									  var authUrl = dbx.getAuthenticationUrl('https://luffy.ee.ncku.edu.tw:32012/cloud.html');
-										console.log(authUrl)
-									  document.getElementById('authlink').href = authUrl;
-									}
-									</script>
-
-									<!--
-									<p>您可以選擇Dropbox或是Google Drive作為雲端服務，並可設定兩種管理方式：<br>
-										<ul>
-											<li>以整個帳號作為雲端硬碟</li>
-											<li>以帳號下的單一資料夾作為雲端硬碟</li>
-										</ul>
-									</p>
-									<div class="box">
-									<form id="login">
-										<div class="row uniform">
-										<h4>請選擇您的雲端服務：</h4><br>
-										<div class="4u 12u$(small)">
-											<input type="radio" id="serviceName-Dropbox" name="serviceName" value="dropbox" checked>
-											<label for="serviceName-Dropbox"> Dropbox</label>
-										</div>
-										<div class="4u 12u$(small)" name="serviceName">
-											<input type="radio" id="serviceName-GoogleDrive" name="serviceName" value="googledrive">
-											<label for="serviceName-GoogleDrive"> Google Drive</label>
-										</div>
-										<br>
-								 			<h4>請輸入您的帳密：</h4><br>
-											<div class="6u 12u$(xsmall)">
-												<input type="text" name="usr_name" id="usr_name" value="" placeholder="User name" />
-											</div>
-											<div class="6u$ 12u$(xsmall)">
-												<input type="password" name="usr_psw" id="usr_psw" value="" placeholder="Password" />
-											</div>
-											<div class="12u$">
-	 										 <ul class="actions">
-	 											 <li><input type="submit" value="Loging" class="special" /></li>
-	 											 <li><input type="reset" value="Reset" /></li>
-	 										 </ul>
-	 									 </div>
-								 		 </div>
-								   </form>
-								   <h2 id="My_files"></h2>
-								 </div>
-							 -->
-
 								</div>
-							</section>
-
-
-
-
-
-
+							</div>
+						</section>
 					</div>
 
-
-
 				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-								<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-								<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
-								<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-								<li><a href="#" class="icon alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<ul class="copyright">
-								<li>&copy; Untitled</li><li>Web Programming in NCKU 2017</li>
-							</ul>
-						</div>
-					</footer>
-
+				<footer id="footer">
+					<div class="inner">
+						<ul class="icons">
+							<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="#" class="icon alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; Untitled</li><li>Web Programming in NCKU 2017</li>
+						</ul>
+					</div>
+				</footer>
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+		var CLIENT_ID = 'azumzeqhxgjah7y';
+		var dbx, root;
+
+		// Parses the url and gets the access token if it is in the urls hash
+		function getAccessTokenFromUrl() {
+		 return utils.parseQueryString(window.location.hash).access_token;
+		}
+
+		// If the user was just redirected from authenticating, the urls hash will
+		// contain the access token.
+		function isAuthenticated() {
+			return !!getAccessTokenFromUrl();
+		}
+
+		function uploadFile() {
+      dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+      var fileInput = document.getElementById('file-upload');
+			var file = fileInput.files[0];
+			dbx.filesUpload({path: '/' + file.name, contents: file})
+				.then(function(response) {
+					location.reload();
+					console.log(response);
+				})
+				.catch(function(error) {
+					console.error(error);
+				});
+			return false;
+    }
+
+		function creatFolder() {
+			dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+			dbx.filesCreateFolder({path: "/" + $('#folder_name').val()})
+			.then(function(response) {
+				location.reload();
+				console.log(response);
+			})
+			.catch(function(error) {
+				console.error(error);
+			});
+			return false;
+		}
+
+		// Return file size in bytes.
+		function getSize(item) {
+			if ( item.size >= 1000000000 ) {
+				var num = Math.round(item.size/10000000);
+				var size = "Size : " + (num/100) + " Gb";
+			}else if ( item.size >= 1000000 ) {
+				var num = Math.round(item.size/10000);
+				var size = "Size : " + (num/100) + " Mb";
+			}
+			else if ( item.size >= 1000 ) {
+				var num = Math.round(item.size/10);
+				var size = "Size : " + (num/100) + " kb";
+			}
+			else {
+				 var size = "Size : " + item.size + " bytes";
+			}
+			return size;
+		}
+
+		// Get the file extension and then return the path of matching png.
+		// Render a list of items to #files
+		function renderItems(items, path, callback) {
+			var index = 0;
+			var folders_open = false;
+			var box = $("<div></div>").addClass("12u$ box row 50% uniform");
+			$(box).attr("style", "border-width: thick");
+			$(box).hide();
+			items.forEach(function(item) {
+				index += 1;
+				if (index == 3) {
+					var div = $("<div></div>").addClass("4u$ 12u$(big)")
+					index = 0;
+				}
+				else {
+					var div = $("<div></div>").addClass("4u 12u$(big)")
+				}
+				var file_name = $("<h4></h4>").text(item.name);
+				file_name.attr("style", "overflow:hidden; white-space:nowrap; text-overflow:ellipsis;");
+
+				var span = $("<span></span>").addClass("image fit");
+				var filepic = $("<img></img>");
+				var folder = false;
+				var array = item.name.split(".");
+				if( array.length === 1 || ( array[0] === "" && array.length === 2 ) ) {
+					folder = true;
+					filepic.attr({
+						src : "images/files/folder.png"
+					})
+					div.attr({
+						id  : item.id.slice(3)
+					})
+				}else {
+					$.post("/cloud/file_extension",{
+						type : array.pop()
+					},
+			     function(res){
+			        filepic.attr("src", res)
+			    });
+				}
+
+				$(span).append(filepic);
+				if ( folder ) {
+					$(div).append(file_name, span);
+				}
+				else {
+					var file_data = $("<p></p>").text(getSize(item));
+					$(file_data).prepend("Last modified : " + item.server_modified.slice(0, 9) + "<br>");
+					$(div).append(file_name, span, file_data);
+				}
+				$(path).append(div);
+
+				$(filepic).click(() => {
+
+					console.log("Click: " + item.name);
+					if ( folder ) {
+						if ( folders_open ) {
+							// Close opened folder
+							$(box).toggle( "blind", () => {
+								$(box).empty();
+								$(box).remove();
+							});
+						}
+						else {
+							// Get children files
+							root = item.id.slice(3);
+							if ($("#"+root).hasClass("4u$") ) {
+								$("#"+root).after(box)
+							}
+							else if ( $("#"+root).next().length &&
+									 $("#"+root).next().hasClass("4u$") ) {
+										 $("#"+root).next().after(box)
+							}
+							else if ( $("#"+root).next().next().length &&
+									 $("#"+root).next().next().hasClass("4u$") ) {
+										 $("#"+root).next().next().after(box)
+							}
+							else if ( $("#"+root).next().length ) {
+								$("#"+root).next().after(box)
+							}
+							else {
+								$("#"+root).after(box)
+							}
+							dbx.filesListFolder({ path: item.path_lower })
+								.then(function(response) {
+									renderItems(response.entries, box,() => {
+										$(box).toggle( "blind" )
+									});
+								})
+								.catch(function(error) {
+									console.error(error);
+								});
+						}
+						folders_open = !folders_open;
+					}
+					else {
+						// click a file
+					}
+				})
+			})
+			if (callback) callback();
+		}
+
+		// This fuction keeps both the authenticate and non-authenticated setions
+		// in the DOM and uses this function to show/hide the correct section.
+		function showPageSection(elementId) {
+			document.getElementById(elementId).style.display = 'block';
+		}
+		if (isAuthenticated()) {
+			showPageSection('authed-header');
+			showPageSection('authed-section');
+
+			// Create an instance of Dropbox with the access token and use it to
+			// fetch and render the files in the users root directory.
+			dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+			dbx.filesListFolder({path: ''})
+				.then(function(response) {
+					renderItems(response.entries, "#files");
+				})
+				.catch(function(error) {
+					console.error(error);
+				});
+		} else {
+			showPageSection('pre-auth-header');
+			showPageSection('pre-auth-section');
+
+			// Set the login anchors href using dbx.getAuthenticationUrl()
+			dbx = new Dropbox({ clientId: CLIENT_ID });
+			var authUrl = dbx.getAuthenticationUrl('https://luffy.ee.ncku.edu.tw:32001/cloud.html');
+			console.log("redirectURL: "+ authUrl)
+			$('#authlink').attr("href",authUrl);
+		}
+
+		    checkCookie();
+
+        function checkCookie() {
+          var username = getCookie("username");
+          if (username != "") {
+            $('#username').html(username);
+          } else {
+            alert("Please Login First");
+            window.location.href='login.html';
+          }
+        } 
+        function getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+        }
+        $('#logout').on('click',function (){
+          document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          window.location.href='login.html';
+        });
+		</script>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="assets/js/main.js"></script>
 
 	</body>
 </html>
